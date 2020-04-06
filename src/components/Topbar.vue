@@ -33,7 +33,7 @@
           <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="ml-4 text-capitalize" color="red" @click="See('https://www.youtube.com/channel/UC1DCedRgGHBdm81E1llLhOQ')"><v-icon left>mdi-youtube</v-icon>Pekora Ch. 兎田ぺこら</v-btn>
           <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="ml-4 text-lowercase" color="blue" @click="See('https://twitter.com/usadapekora')"><v-icon left>mdi-twitter</v-icon>@usadapekora</v-btn>
         <v-spacer></v-spacer>
-         <v-btn  v-if="$vuetify.breakpoint.mdAndUp" @click="See('https://github.com/Coceki/peko-button')"><v-icon left>mdi-github</v-icon>{{$t("ui.helpdevelope")}}</v-btn>
+         <v-btn  v-if="$vuetify.breakpoint.mdAndUp" @click="See('https://github.com/Coceki/ProjectP-Vue.js')"><v-icon left>mdi-github</v-icon>{{$t("ui.helpdevelope")}}</v-btn>
         <v-fab-transition>
             <v-btn v-on="on" fab icon @click="DarkMode()" >
               <v-icon>{{darkmodeicon}}</v-icon>
