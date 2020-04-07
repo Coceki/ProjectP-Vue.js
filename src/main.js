@@ -10,7 +10,11 @@ import ja from './assets/lang/ja'
 import VueCookies from 'vue-cookies'
 import '@mdi/font/css/materialdesignicons.css'
 import global from './components/Bgmplayer.vue'
+import timeline from './components/Story.vue'
+import fx from './components/SoundFX.vue'
 Vue.prototype.COMMON = global
+Vue.prototype.TIME = timeline
+Vue.prototype.FX = fx
 Vue.use(VueCookies)
 
 Vue.config.productionTip = false

@@ -1,6 +1,9 @@
 <template>
   <div class="game">
     <transition name="fade">
+        <p v-if="titleshow"></p>
+    </transition>
+    <transition name="fade">
       <div id="pekoland" v-if="show">
         <v-img
           :src="pekora"
@@ -22,23 +25,40 @@
           style="position:absolute;left: 0px;top: 0px;z-index:9"
         ></v-img>
         <transition name="fade">
-        <div id="BGMnow" style="position:absolute;left: 10px;bottom:10px;z-index:11" v-if="bgmshow">
-          <p class="white--text title font-weight-bold">🎵{{bgmnow}}</p>
-        </div>
+          <div
+            id="BGMnow"
+            style="position:absolute;left: 10px;bottom:10px;z-index:11"
+            v-if="bgmshow"
+          >
+            <p class="white--text title font-weight-bold">🎵{{bgmnow}}</p>
+          </div>
         </transition>
+        <v-scroll-y-reverse-transition>
+            <v-card v-if="dialogshow" class="pa-5" min-width=1260 min-height="200" style="position:absolute;left: 10px;bottom:10px;z-index:11">
+                <v-card-title class="font-weight-bold">{{whosaid}}</v-card-title>
+                {{storytext}}
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" @click="nextchart" fab><v-icon>mdi-arrow-right-bold</v-icon></v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-scroll-y-reverse-transition>
       </div>
-      
     </transition>
-    
   </div>
 </template>
 
 <script>
 export default {
   data: () => ({
-    systemmode:true,//当前玩家是否可操控角色
-    bgmnow:null,//当前BGM指示器
-    bgmshow:false,
+    i:0,//迭代器
+    titleshow:false,//章节字体
+    whosaid:"角色",
+    storytext:"输入剧情",
+    dialogshow:false,
+    systemmode: true, //当前玩家是否可操控角色
+    bgmnow: null, //当前BGM指示器
+    bgmshow: false,
     inputing: false, //判断是否按键
     show: false,
     speed: 0, //X轴加速度，正右负左
@@ -52,20 +72,57 @@ export default {
     sky: require("../assets/scene/sky.png") //背景
   }),
   methods: {
+    director() {
+      //导演
+      var _this = this;
+      if (this.TIME.timeline == "S00") {//序章00
+        window.console.log("序章");
+        setTimeout(function() {
+          _this.show = true;
+        }, 1000);
+        setTimeout(function() {
+          _this.bgmshow = true;
+        }, 2000);
+        setTimeout(function() {
+          _this.dialogshow = true;
+        }, 7000);
+        setTimeout(function() {
+          _this.bgmshow = false;
+        }, 5000);
+        this.COMMON.changeBgm("bgm/Distant_Thunder.mp3"); //播放BGM
+        this.bgmnow = "Distant_Thunder";
+        this.storyfitter(this.TIME.timeline);
+      }
+    },
+    storyfitter(t){//填充对话框
+        var _this=this;
+          _this.dialogshow = false;
+
+        if(_this.i<(_this.$t("story."+t).length)){
+            _this.whosaid=_this.$t("story."+t)[_this.i].who;
+            _this.storytext=_this.$t("story."+t)[_this.i].text;
+            
+            
+        }
+        _this.i+=1;
+    },
+    nextchart(){
+        var _this=this;
+        this.storyfitter(this.TIME.timeline);
+        if(_this.i<(_this.$t("story."+this.TIME.timeline).length)+1){
+        setTimeout(function() {
+                _this.dialogshow=true;
+        }, 100);
+        }else{
+            _this.i=0;
+            this.systemmode=false;
+        }
+    },
     init() {
       var _this = this;
-      window.console.log("序章");
-      this.COMMON.changeBgm("bgm/Distant_Thunder.mp3");//播放BGM
-      this.bgmnow="Distant_Thunder";
-      setTimeout(function() {
-        _this.show = true;
-      }, 1000);
-      setTimeout(function() {
-        _this.bgmshow = true;
-      }, 2000);
-      setTimeout(function() {
-        _this.bgmshow = false;
-      }, 5000);
+
+      this.director();
+
       setInterval(this.updateFrame, 17); //约60FPS
       document.onkeydown = function(event) {
         //按键监听
@@ -76,18 +133,29 @@ export default {
           window.event.returnValue = false; //阻止默认的按键行为
         }
         let key = window.event.keyCode;
-        if (key == 39) {//方向键右
-        if(_this.systemmode){
-            window.console.log("剧情中")
-        }else{
+        if (key == 39) {
+          //方向键右
+          if (_this.systemmode) {
+            window.console.log("剧情中");
+          } else {
             _this.goright();
             _this.inputing = true;
           }
-        } else if (key == 37) {//方向键左
+        } else if (key == 37) {
+          //方向键左
+          if (_this.systemmode) {
+            window.console.log("剧情中");
+          } else {
           _this.goleft();
           _this.inputing = true;
-        } else if (key == 32) {//空格键
+          }
+        } else if (key == 32) {
+          //空格键
+          if (_this.systemmode) {
+            window.console.log("剧情中");
+          } else {
           _this.jump();
+          }
         }
       };
       document.onkeyup = function() {
@@ -168,6 +236,7 @@ export default {
         this.speedY = this.jumpvalue;
       }
     },
+
     start() {
       var _this = this;
       _this.showm = false;
@@ -181,6 +250,7 @@ export default {
       }, 500);
     }
   },
+
   created() {
     this.init();
   }
