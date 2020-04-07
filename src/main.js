@@ -9,6 +9,8 @@ import en from './assets/lang/en'
 import ja from './assets/lang/ja'
 import VueCookies from 'vue-cookies'
 import '@mdi/font/css/materialdesignicons.css'
+import global from './components/Bgmplayer.vue'
+Vue.prototype.COMMON = global
 Vue.use(VueCookies)
 
 Vue.config.productionTip = false

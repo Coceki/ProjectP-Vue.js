@@ -1,6 +1,6 @@
 <template>
    
-      <div id="game" >
+      <div class="game" >
           <v-btn x-large color=secondary @click="start" fab style="postion:absolute;left: 600px;top: 300px;"><v-icon>mdi-play</v-icon></v-btn>
     </div>
     
@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style>
-#game{
+.game{
     max-width: 1280px;
     min-width: 1280px;
     max-height: 720px;

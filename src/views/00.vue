@@ -1,5 +1,5 @@
 <template>
-  <div id="game">
+  <div class="game">
       <!--说明信息-->
       <transition name="fade">
       <div v-if="show" id="opening1">

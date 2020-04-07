@@ -1,5 +1,5 @@
 <template>
-  <div id="game">
+  <div class="game">
     <transition name="fade">
       <div id="pekoland" v-if="show">
         <v-img
@@ -21,21 +21,31 @@
           height="420"
           style="position:absolute;left: 0px;top: 0px;z-index:9"
         ></v-img>
+        <transition name="fade">
+        <div id="BGMnow" style="position:absolute;left: 10px;bottom:10px;z-index:11" v-if="bgmshow">
+          <p class="white--text title font-weight-bold">🎵{{bgmnow}}</p>
+        </div>
+        </transition>
       </div>
+      
     </transition>
+    
   </div>
 </template>
 
 <script>
 export default {
   data: () => ({
+    systemmode:true,//当前玩家是否可操控角色
+    bgmnow:null,//当前BGM指示器
+    bgmshow:false,
     inputing: false, //判断是否按键
     show: false,
     speed: 0, //X轴加速度，正右负左
     maxspeed: 10, //最大速度（像素每帧）
     minheight: 290, //地面海拔
-    jumpvalue: 60, //弹跳加速度
-    g: 10, //重力系数
+    jumpvalue: 50, //弹跳加速度
+    g: 8, //重力系数
     speedY: 0, //Y轴加速度，正上负下
     pekora: require("../assets/character/pekora.png"), //人物
     ground: require("../assets/scene/ground.png"), //地面
@@ -45,9 +55,17 @@ export default {
     init() {
       var _this = this;
       window.console.log("序章");
+      this.COMMON.changeBgm("bgm/Distant_Thunder.mp3");//播放BGM
+      this.bgmnow="Distant_Thunder";
       setTimeout(function() {
         _this.show = true;
       }, 1000);
+      setTimeout(function() {
+        _this.bgmshow = true;
+      }, 2000);
+      setTimeout(function() {
+        _this.bgmshow = false;
+      }, 5000);
       setInterval(this.updateFrame, 17); //约60FPS
       document.onkeydown = function(event) {
         //按键监听
@@ -59,8 +77,12 @@ export default {
         }
         let key = window.event.keyCode;
         if (key == 39) {//方向键右
-          _this.goright();
-          _this.inputing = true;
+        if(_this.systemmode){
+            window.console.log("剧情中")
+        }else{
+            _this.goright();
+            _this.inputing = true;
+          }
         } else if (key == 37) {//方向键左
           _this.goleft();
           _this.inputing = true;
