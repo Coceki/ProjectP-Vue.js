@@ -4,10 +4,17 @@
       <p v-if="titleshow"></p>
     </transition>
     <transition name="fade">
-      <div id="pekoland" v-if="show">
+      <div ref="pekoland" style="position: relative;
+  padding: 0%;
+  overflow: hidden;
+  max-width: 1280px;
+  min-width: 1280px;
+  max-height: 720px;
+  min-height: 720px;
+  background-color: wheat;" v-if="show">
         <v-img
           :src="pekora"
-          id="pekora"
+          ref="pekora"
           width="75"
           height="150"
           style="position:absolute;left: 50px;bottom: 290px;z-index:11"
@@ -26,13 +33,14 @@
         ></v-img>
         <transition name="fade">
           <div
-            id="BGMnow"
+            ref="BGMnow"
             style="position:absolute;left: 10px;bottom:10px;z-index:11"
             v-if="bgmshow"
           >
             <p class="white--text title font-weight-bold">🎵{{bgmnow}}</p>
           </div>
         </transition>
+        
         <v-scroll-y-reverse-transition>
           <v-card
             v-if="dialogshow"
@@ -130,7 +138,7 @@ export default {
     },
     init() {
       var _this = this;
-
+        
       this.director();
 
       setInterval(this.updateFrame, 17); //约60FPS
@@ -154,7 +162,7 @@ export default {
         } else if (key == 37) {
           //方向键左
           if (_this.systemmode) {
-            window.console.log("剧情中");
+            //window.console.log("剧情中");
           } else {
             _this.goleft(true);
             _this.inputing = true;
@@ -162,7 +170,7 @@ export default {
         } else if (key == 32) {
           //空格键
           if (_this.systemmode) {
-            window.console.log("剧情中");
+            //window.console.log("剧情中");
           } else {
             _this.jump();
           }
@@ -189,10 +197,11 @@ export default {
       };
     },
     updateFrame() {
-      var c = document.getElementById("pekora").style.left;
+    //window.console.log(this.$refs.pekora.$el.style);
+      var c = this.$refs.pekora.$el.style.left;
       c = parseInt(c.substr(0, c.length - 2));
       c = c + this.speed;
-      var h = document.getElementById("pekora").style.bottom;
+      var h = this.$refs.pekora.$el.style.bottom;
       h = parseInt(h.substr(0, h.length - 2));
       h = h + this.speedY;
 
@@ -221,8 +230,8 @@ export default {
       }
       this.speedcomptue();
       //window.console.log(this.speedY,h);
-      document.getElementById("pekora").style.bottom = h + "px";
-      document.getElementById("pekora").style.left = c + "px"; //更新当前位置
+      this.$refs.pekora.$el.style.bottom = h + "px";
+      this.$refs.pekora.$el.style.left = c + "px"; //更新当前位置
     },
     speedcomptue() {
       if (this.movingright) {
@@ -255,7 +264,7 @@ export default {
       //     this.speed = this.maxspeed;
       //   }
       this.inputing = false;
-      //window.console.log("右"+document.getElementById("pekora").style.left);
+      //window.console.log("右"+this.$refs.pekora.$el.style.left);
     },
     goleft(e) {
       //左移动
@@ -268,11 +277,11 @@ export default {
       //     this.speed = -this.maxspeed;
       //   }
       this.inputing = false;
-      //window.console.log("左"+document.getElementById("pekora").style.left);
+      //window.console.log("左"+this.$refs.pekora.$el.style.left);
     },
     jump() {
       //跳
-      var h = document.getElementById("pekora").style.bottom;
+      var h = this.$refs.pekora.$el.style.bottom;
       h = parseInt(h.substr(0, h.length - 2));
       if (h == 290) {
         this.speedY = this.jumpvalue;
