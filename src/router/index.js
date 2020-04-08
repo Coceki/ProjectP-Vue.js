@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import MainUI from '../views/Main.vue'
 import S00 from "../views/00.vue"
 import pekoland from "../views/pekoland.vue"
+import woodhouse from "../views/woodhouse.vue"
 Vue.use(VueRouter)
 
 const routes = [{
@@ -26,6 +27,14 @@ const routes = [{
         component: pekoland,
         meta: {
             title: "Pekoland",
+        },
+    },
+    {
+        path: '/woodhouse',
+        name: 'woodhouse',
+        component: woodhouse,
+        meta: {
+            title: "woodhouse",
         },
     },
 

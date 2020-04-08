@@ -123,28 +123,29 @@ export default {
     director() {
       //导演
       var _this = this;
-      if (this.TIME.timeline == "S00") {
+      if (this.TIME.timeline == "S01") {
         //序章00
-        window.console.log("序章");
-        this.chapter = this.$t("chapter.S0");
-        this.chaptershow = true;
-        setTimeout(function() {
-          _this.chaptershow = false;
-        }, 3000);
+        this.systemmode=false;
+        window.console.log("小屋");
+        //this.chapter = this.$t("chapter.S0");
+        //this.chaptershow = true;
+        // setTimeout(function() {
+        //   _this.chaptershow = false;
+        // }, 3000);
         setTimeout(function() {
           _this.show = true;
         }, 1000);
         setTimeout(function() {
           _this.bgmshow = true;
         }, 2000);
-        setTimeout(function() {
-          _this.dialogshow = true;
-        }, 7000);
+        // setTimeout(function() {
+        //   _this.dialogshow = true;
+        // }, 7000);
         setTimeout(function() {
           _this.bgmshow = false;
         }, 5000);
-        this.COMMON.changeBgm("bgm/Distant_Thunder.mp3"); //播放BGM
-        this.bgmnow = "Distant_Thunder";
+        this.COMMON.changeBgm("bgm/spa_rain_in_nature_rain_light_with_thunder_02.mp3"); //播放BGM
+        this.bgmnow = "Rain in nature with thunder";
         this.storyfitter(this.TIME.timeline);
         
       }
@@ -173,10 +174,10 @@ export default {
         this.systemmode = false;
         if (this.TIME.timeline == "S00") {
           //末尾剧情判断
-          _this.showhelp = true;
-          setTimeout(function() {
-            _this.showhelp = false; //帮助文本
-          }, 5000);
+        //   _this.showhelp = true;
+        //   setTimeout(function() {
+        //     _this.showhelp = false; //帮助文本
+        //   }, 5000);
         }
       }
     },
@@ -276,17 +277,12 @@ export default {
       //window.console.log(this.speedY,h);
       this.$refs.pekora.$el.style.bottom = h + "px";
       this.$refs.pekora.$el.style.left = c + "px"; //更新当前位置
-      if(c>=1000){
-            window.console.log("进入S01");
-             clearInterval(this.frame);
-             this.show=false;
-             this.TIME.timeline="S01";//推进剧情
-             setInterval(
-             this.$router.push({path:"/woodhouse",
-                query:{
-                t:Date.now(),
-            },}),500)
-        }
+    //   if(c>=1000){
+    //         window.console.log("进入S01");
+    //          clearInterval(this.frame);
+    //          this.show=false;
+    //          this.
+    //     }
     },
     speedcomptue() {
       if (this.movingright) {
