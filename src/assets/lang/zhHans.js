@@ -8,7 +8,11 @@ module.exports = {
         info: "测试版，开发中",
         attention: "注意",
         attentioninfo: "本页面是由爱好者自行创建，与Hololive官方无关",
-        gamestart: "开始游戏"
+        gamestart: "开始游戏",
+        help: "方向键来移动，空格键跳跃"
+    },
+    chapter: {
+        S0: "序章"
     },
     story: {
         S00: [{

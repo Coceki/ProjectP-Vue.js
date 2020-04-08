@@ -4,14 +4,20 @@
       <p v-if="titleshow"></p>
     </transition>
     <transition name="fade">
-      <div ref="pekoland" style="position: relative;
-  padding: 0%;
-  overflow: hidden;
-  max-width: 1280px;
-  min-width: 1280px;
-  max-height: 720px;
-  min-height: 720px;
-  background-color: wheat;" v-if="show">
+      <!--游戏环境-->
+      <div
+        ref="pekoland"
+        style="position: relative;
+            padding: 0%;
+            overflow: hidden;
+            max-width: 1280px;
+            min-width: 1280px;
+            max-height: 720px;
+            min-height: 720px;
+            background-color: wheat;"
+        v-if="show"
+      >
+        <!--玩家-->
         <v-img
           :src="pekora"
           ref="pekora"
@@ -19,18 +25,21 @@
           height="150"
           style="position:absolute;left: 50px;bottom: 290px;z-index:11"
         ></v-img>
+        <!--地面-->
         <v-img
           :src="ground"
           width="1280"
           height="300"
           style="position:absolute;left: 0px;bottom: 0px;z-index:10"
         ></v-img>
+        <!--天空-->
         <v-img
           :src="sky"
           width="1280"
           height="420"
           style="position:absolute;left: 0px;top: 0px;z-index:9"
         ></v-img>
+        <!--BGM指示器-->
         <transition name="fade">
           <div
             ref="BGMnow"
@@ -40,7 +49,24 @@
             <p class="white--text title font-weight-bold">🎵{{bgmnow}}</p>
           </div>
         </transition>
-        
+        <!--如何操作文本-->
+        <transition name="fade">
+          <div
+            v-if="showhelp"
+            class="white--text display-1 font-weight-bold"
+            style="position:absolute;left:50%;top:50%;margin-left:-50px;margin-top:-50px;z-index:12"
+          >{{$t("ui.help")}}</div>
+        </transition>
+        <!--章节指示器-->
+        <transition name="fade">
+          <div
+            v-if="chaptershow"
+            ref="chapter"
+            class="display-2 white--text font-weight-bold"
+            style="position:absolute;left:50%;top:50%;margin-left:-50px;margin-top:-50px;z-index:12"
+          >{{chapter}}</div>
+        </transition>
+        <!--人物对话框-->
         <v-scroll-y-reverse-transition>
           <v-card
             v-if="dialogshow"
@@ -67,6 +93,9 @@
 <script>
 export default {
   data: () => ({
+    showhelp: false,
+    chaptershow: false, //展示章节指示器
+    chapter: "序章",
     movingright: false, //右移准备
     movingleft: false, //左移准备
     i: 0, //迭代器
@@ -96,6 +125,11 @@ export default {
       if (this.TIME.timeline == "S00") {
         //序章00
         window.console.log("序章");
+        this.chapter = this.$t("chapter.S0");
+        this.chaptershow = true;
+        setTimeout(function() {
+          _this.chaptershow = false;
+        }, 3000);
         setTimeout(function() {
           _this.show = true;
         }, 1000);
@@ -125,6 +159,7 @@ export default {
       _this.i += 1;
     },
     nextchart() {
+      this.FX.changeFX("sound/click.mp3");
       var _this = this;
       this.storyfitter(this.TIME.timeline);
       if (_this.i < _this.$t("story." + this.TIME.timeline).length + 1) {
@@ -134,11 +169,18 @@ export default {
       } else {
         _this.i = 0;
         this.systemmode = false;
+        if (this.TIME.timeline == "S00") {
+          //末尾剧情判断
+          _this.showhelp = true;
+          setTimeout(function() {
+            _this.showhelp = false; //帮助文本
+          }, 5000);
+        }
       }
     },
     init() {
       var _this = this;
-        
+
       this.director();
 
       setInterval(this.updateFrame, 17); //约60FPS
@@ -197,7 +239,7 @@ export default {
       };
     },
     updateFrame() {
-    //window.console.log(this.$refs.pekora.$el.style);
+      //window.console.log(this.$refs.pekora.$el.style);
       var c = this.$refs.pekora.$el.style.left;
       c = parseInt(c.substr(0, c.length - 2));
       c = c + this.speed;
